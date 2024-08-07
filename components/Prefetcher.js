@@ -48,6 +48,20 @@ const query_thesis = `
     tags,
   }
 `;
+const query_gallery = `
+  *[_type == 'gallery'] | order(_createdAt desc) | order(_updatedAt desc){
+    _id,
+    _createdAt,
+    _updatedAt,
+    _type,
+    "headerImage": headerImage.asset -> url,
+    "title": galleryTitle,
+    "slug": slug.current,
+    "authors": postAuthor[] -> { fullName, pronouns, "authorPhoto": authorPhoto.asset -> url },
+    tags,
+  }
+`;
+
 
 const PrefetcherContext = createContext();
 
@@ -55,6 +69,7 @@ const PrefetcherWrapper = ({ children }) => {
   const [blogs, setBlogs] = useState([]);
   const [bulletins, setBulletins] = useState([]);
   const [thesis, setThesis] = useState([]);
+  const [gallery, setgallery] = useState([]);
   const [globalSearchItems, setGlobalSearchItems] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -62,6 +77,7 @@ const PrefetcherWrapper = ({ children }) => {
     blogs,
     bulletins,
     thesis,
+    gallery,
     globalSearchItems,
   };
 
@@ -69,15 +85,17 @@ const PrefetcherWrapper = ({ children }) => {
     const res_blog = await client.fetch(query_blog);
     const res_bulletin = await client.fetch(query_bulletin);
     const res_thesis = await client.fetch(query_thesis);
+    const res_gallery = await client.fetch(query_gallery);
 
-    const globalItems = [...res_blog, ...res_bulletin, ...res_thesis];
+    const globalItems = [...res_blog, ...res_bulletin, ...res_thesis, ...res_gallery];
 
     setBlogs(res_blog);
     setBulletins(res_bulletin);
     setThesis(res_thesis);
+    setGallery(res_gallery);
     setGlobalSearchItems(globalItems);
 
-    if (res_blog && res_thesis && res_bulletin) {
+    if (res_blog && res_thesis && res_gallery && res_bulletin) {
       setTimeout(() => {
         setLoaded(true);
       }, 200);

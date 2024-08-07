@@ -129,6 +129,16 @@ const Navbar = (e) => {
                 </Button>
               </Link>
 
+              <Link href="/gallery">
+                <Button
+                  onClick={(e) => setSideMenuOpen(false)}
+                  variant="text"
+                  color="yellow"
+                >
+                  gallery
+                </Button>
+              </Link>
+
               <Link href="/about">
                 <Button
                   onClick={(e) => setSideMenuOpen(false)}
@@ -280,6 +290,11 @@ const Navbar = (e) => {
             <Link href="/thesis" scroll={false}>
               <Button color="yellow" variant="text">
                 thesis
+              </Button>
+            </Link>
+            <Link href="/gallery" scroll={false}>
+              <Button color="yellow" variant="text">
+                Gallery
               </Button>
             </Link>
             <Link href="/about" scroll={false}>
